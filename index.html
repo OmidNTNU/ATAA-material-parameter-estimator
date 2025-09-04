@@ -28,7 +28,6 @@
         .card { margin-top: 2rem; }
         .form-label { font-weight: bold; }
         #results-card, #loading-indicator { display: none; }
-        /* Style for the formatted results list */
         .results-list {
             list-style-type: none;
             padding-left: 0;
@@ -39,6 +38,13 @@
             justify-content: space-between;
             padding: 0.25rem 0;
             border-bottom: 1px solid #eee;
+        }
+        .figure-img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
     </style>
 </head>
@@ -160,6 +166,29 @@
                 \]
             </div>
         </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Fiber Orientations</h3>
+            </div>
+            <div class="card-body text-center">
+                <img src="fullATAA.png" alt="Illustration of aortic fiber orientations" class="figure-img">
+                <p class="mt-2 text-muted">The image displays estimated fiber orientations. The blue dashed line indicates the longitudinal direction, while the red dashed line represents the circumferential direction.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>References</h3>
+            </div>
+            <div class="card-body">
+                <p>For a detailed explanation of the methodology, data collection, and model validation, please refer to our publication:</p>
+                <ul>
+                    <li><strong>[Your Name(s), "Title of Your Paper", <em>Journal Name</em>, Year.]</strong> <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4892378" target="_blank" rel="noopener noreferrer">Preprint available at SSRN.</a></li>
+                </ul>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -169,7 +198,6 @@
         const outputParamsDiv = document.getElementById('output-params');
         const closestMatchDiv = document.getElementById('closest-match');
         
-        // --- NEW: LaTeX mapping for parameter keys ---
         const latexMap = {
             mu: '$\\mu$',
             k1: '$k_1$',
@@ -188,14 +216,12 @@
 
         let pyodide = null;
 
-        // --- NEW: Function to format results object into a nice list ---
         function formatResults(data, isParams = false) {
             let html = '<ul class="results-list">';
             const processedData = {};
 
-            // Consolidate k_ip1 and k_ip2 if this is the parameter object
             if (isParams && data.hasOwnProperty('k_ip1')) {
-                data.k_ip = data.k_ip1; // Create new consolidated key
+                data.k_ip = data.k_ip1;
                 delete data.k_ip1;
                 delete data.k_ip2;
             }
@@ -247,11 +273,9 @@
                 alert("Error: " + results.error);
                 resultsCard.style.display = 'none';
             } else {
-                // Use the new formatting function
                 closestMatchDiv.innerHTML = formatResults(results.closest_match_info);
                 outputParamsDiv.innerHTML = formatResults(results.parameters, true);
 
-                // Tell MathJax to re-render the new content
                 MathJax.typesetPromise([closestMatchDiv, outputParamsDiv]).then(() => {
                     resultsCard.style.display = 'block';
                 });
