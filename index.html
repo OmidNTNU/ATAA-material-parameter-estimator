@@ -141,15 +141,23 @@
 
         <div class="card">
             <div class="card-header">
-                <h3>Strain Energy Function (SEF)</h3>
+                <h3>Strain Energy Function</h3>
             </div>
             <div class="card-body">
-                <p>The aortic wall is modeled as a hyperelastic material with two families of collagen fibers. The strain-energy function $\Psi$ is decomposed into an isotropic part ($\Psi_{\text{iso}}$) and an anisotropic part ($\Psi_{\text{f}}$):</p>
-                $$ \Psi = \Psi_{\text{iso}}(\mathbf{C}) + \sum_{i=4,6} \Psi_{{\rm f}_i}(\mathbf{C}, \mathbf{H}_i) $$
-                <p>The contributions are specified as:</p>
-                $$ \Psi_{\text{iso}} = \frac{\mu}{2} \left( {I}_1 - 3 \right) $$
-                $$ \sum_{i=4,6} \Psi_{{\rm f}_i} = \frac{k_1}{2 k_2} \left( \exp[ k_2 E_4^2] - 1 \right) + \frac{k_1}{2 k_2} \left( \exp[ k_2 E_6^2] - 1 \right) $$
-                <p>The fiber dispersion is modeled by out-of-plane ($\kappa_{\text{op}}$) and in-plane ($\kappa_{\text{ip}}$) parameters which define structural tensors $\mathbf{H}_i$. The fiber families are oriented at angles $\alpha_1$ and $\alpha_2$.</p>
+                <p>The aortic wall is modeled as a hyperelastic material with an isotropic matrix and two families of collagen fibers. The total strain energy function $\Psi$ is given by:</p>
+                \[
+                \Psi = \underbrace{\frac{\textcolor{red}{\mu}}{2} \left( \bar{I}_1 - 3 \right)}_{\text{neo-Hookean}} + \underbrace{\frac{\textcolor{blue}{k_{1}}}{2\textcolor{blue}{k_{2}}} \left( \exp \left[ \textcolor{blue}{k_{2}} \left( \textcolor{green}{E_4} \right)^2 \right] - 1 \right)}_{\text{First fiber family}} + 
+                \underbrace{\frac{ \textcolor{blue}{k_{1}}}{2\textcolor{blue}{k_{2}}} \left( \exp \left[ \textcolor{blue}{k_{2}} \left( \textcolor{green}{E_6} \right)^2 \right] - 1 \right)}_{\text{Second fiber family}}
+                \]
+                <p>The terms $\textcolor{green}{E_4}$ and $\textcolor{green}{E_6}$ are strain-like quantities for each fiber family, which depend on the strain invariants ($I_1, I_4, I_6$) and the structural tensors ($\mathbf{H}_i$):</p>
+                \[
+                \textcolor{green}{E_i} = \mathbf{H}_i : (\mathbf{C} - \mathbf{I}) = A I_1 + B I_i + (1 - 3A - B) I_n - 1, \quad i = 4,6
+                \]
+                <p>The fiber orientation is defined by two angles, $\alpha_1$ and $\alpha_2$. These represent the mean direction of the two fiber families, measured from the circumferential direction of the aorta, and range from $-90^\circ$ to $+90^\circ$.</p>
+                <p>The fiber dispersion (how spread out the fibers are) is modeled by an out-of-plane parameter, $\kappa_{\text{op}}$, and an in-plane parameter, $\kappa_{\text{ip}}$. These define the terms $A$ and $B$ as follows:</p>
+                \[
+                A = 2 \kappa_{\text{op}} \kappa_{\text{ip}} \quad \text{and} \quad B = 2 \kappa_{\text{op}} (1 - 2 \kappa_{\text{ip}})
+                \]
             </div>
         </div>
     </div>
